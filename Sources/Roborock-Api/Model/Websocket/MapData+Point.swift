@@ -1,6 +1,6 @@
 //
-//  Point.swift
-//  Roborock
+//  MapData+Point.swift
+// 
 //
 //  Created by Thomas Hack on 30.06.21.
 //

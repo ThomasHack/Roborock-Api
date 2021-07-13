@@ -1,8 +1,8 @@
 //
-//  ForbiddenZone.swift
-//  Roborock
+//  MapData+ForbiddenZones.swift
+// 
 //
-//  Created by Hack, Thomas on 02.07.21.
+//  Created by Thomas Hack on 02.07.21.
 //
 
 import Foundation

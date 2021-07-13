@@ -1,6 +1,6 @@
 //
-//  Pixel.swift
-//  Roborock
+//  MapData+Pixel.swift
+// 
 //
 //  Created by Thomas Hack on 30.06.21.
 //

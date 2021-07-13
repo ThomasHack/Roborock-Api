@@ -1,8 +1,8 @@
 //
 //  MapData+PathType.swift
-//  RoborockApi
 //
-//  Created by Hack, Thomas on 12.07.21.
+//
+//  Created by Thomas Hack on 12.07.21.
 //
 
 import Foundation

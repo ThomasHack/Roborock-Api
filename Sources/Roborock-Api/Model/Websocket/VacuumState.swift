@@ -1,8 +1,8 @@
 //
 //  VacuumState.swift
-//  Roborock
+// 
 //
-//  Created by Hack, Thomas on 06.07.21.
+//  Created by Thomas Hack on 06.07.21.
 //
 
 import Foundation

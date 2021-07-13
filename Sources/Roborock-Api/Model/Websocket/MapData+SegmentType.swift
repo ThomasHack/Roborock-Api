@@ -1,6 +1,6 @@
 //
-//  SegmentType.swift
-//  Roborock
+//  MapData+SegmentType.swift
+// 
 //
 //  Created by Thomas Hack on 03.07.21.
 //

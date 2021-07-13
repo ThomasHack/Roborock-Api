@@ -1,6 +1,6 @@
 //
 //  Status.swift
-//  Roborock
+// 
 //
 //  Created by Thomas Hack on 08.05.21.
 //

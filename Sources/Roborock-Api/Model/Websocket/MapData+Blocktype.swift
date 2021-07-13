@@ -1,8 +1,8 @@
 //
-//  Blocktype.swift
-//  Roborock
+//  MapData+Blocktype.swift
+// 
 //
-//  Created by Hack, Thomas on 01.07.21.
+//  Created by Thomas Hack on 01.07.21.
 //
 
 import Foundation

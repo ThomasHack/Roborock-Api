@@ -1,6 +1,6 @@
 //
-//  Size.swift
-//  Roborock
+//  MapData+Size.swift
+// 
 //
 //  Created by Thomas Hack on 30.06.21.
 //

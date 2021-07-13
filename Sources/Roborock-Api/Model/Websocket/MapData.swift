@@ -1,8 +1,8 @@
 //
 //  MapData.swift
-//  Roborock
+// 
 //
-//  Created by Hack, Thomas on 29.06.21.
+//  Created by Thomas Hack on 29.06.21.
 //
 
 import UIKit
