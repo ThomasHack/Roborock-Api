@@ -5,7 +5,7 @@
 //  Created by Hack, Thomas on 29.06.21.
 //
 
-import UIKit
+import Foundation
 
 extension MapData {
     public struct Path: Equatable {
