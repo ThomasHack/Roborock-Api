@@ -34,30 +34,6 @@ public struct Status: Equatable, Decodable {
         VacuumState(rawValue: state)
     }
 
-    public init(state: Int, otaState: String, messageVersion: Int, battery: Int, cleanTime: Int, cleanArea: Int, errorCode: Int, mapPresent: Int, inCleaning: Int, inReturning: Int, inFreshState: Int, waterBoxStatus: Int, fanPower: Int, dndEnabled: Int, mapStatus: Int, mainBrushLife: Int, sideBrushLife: Int, filterLife: Int, stateHumanReadable: String, model: String, errorHumanReadable: String) {
-        self.state = state
-        self.otaState = otaState
-        self.messageVersion = messageVersion
-        self.battery = battery
-        self.cleanTime = cleanTime
-        self.cleanArea = cleanArea
-        self.errorCode = errorCode
-        self.mapPresent = mapPresent
-        self.inCleaning = inCleaning
-        self.inReturning = inReturning
-        self.inFreshState = inFreshState
-        self.waterBoxStatus = waterBoxStatus
-        self.fanPower = fanPower
-        self.dndEnabled = dndEnabled
-        self.mapStatus = mapStatus
-        self.mainBrushLife = mainBrushLife
-        self.sideBrushLife = sideBrushLife
-        self.filterLife = filterLife
-        self.stateHumanReadable = stateHumanReadable
-        self.model = model
-        self.errorHumanReadable = errorHumanReadable
-    }
-
     enum CodingKeys: String, CodingKey {
         case state = "state"
         case otaState = "ota_state"
@@ -80,5 +56,29 @@ public struct Status: Equatable, Decodable {
         case stateHumanReadable = "stateHR"
         case model = "model"
         case errorHumanReadable = "errorHR"
+    }
+
+    public init(state: Int, otaState: String, messageVersion: Int, battery: Int, cleanTime: Int, cleanArea: Int, errorCode: Int, mapPresent: Int, inCleaning: Int, inReturning: Int, inFreshState: Int, waterBoxStatus: Int, fanPower: Int, dndEnabled: Int, mapStatus: Int, mainBrushLife: Int, sideBrushLife: Int, filterLife: Int, stateHumanReadable: String, model: String, errorHumanReadable: String) {
+        self.state = state
+        self.otaState = otaState
+        self.messageVersion = messageVersion
+        self.battery = battery
+        self.cleanTime = cleanTime
+        self.cleanArea = cleanArea
+        self.errorCode = errorCode
+        self.mapPresent = mapPresent
+        self.inCleaning = inCleaning
+        self.inReturning = inReturning
+        self.inFreshState = inFreshState
+        self.waterBoxStatus = waterBoxStatus
+        self.fanPower = fanPower
+        self.dndEnabled = dndEnabled
+        self.mapStatus = mapStatus
+        self.mainBrushLife = mainBrushLife
+        self.sideBrushLife = sideBrushLife
+        self.filterLife = filterLife
+        self.stateHumanReadable = stateHumanReadable
+        self.model = model
+        self.errorHumanReadable = errorHumanReadable
     }
 }
