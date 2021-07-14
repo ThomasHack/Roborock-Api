@@ -3,20 +3,19 @@
 //
 //
 //  Created by Thomas Hack on 13.07.21.
-//
+//  https://github.com/rand256/valetudo/wiki/REST-API
 
 import Combine
 import Foundation
 
-protocol RequestType {
-    associatedtype RequestData
-
-    static func prepare(_ request: inout URLRequest, with data: RequestData)
-}
-
 enum HttpMethods: String {
     case get = "GET"
     case put = "PUT"
+}
+
+protocol RequestType {
+    associatedtype RequestData
+    static func prepare(_ request: inout URLRequest, with data: RequestData)
 }
 
 enum RequestTypes {
@@ -47,17 +46,66 @@ enum RequestTypes {
 }
 
 public enum RestClientError: Error, Equatable {
-    case url
+    case invalidUrl
     case invalidHttpCode
+    case invalidRequestData
 }
 
 protocol RestClientProtocol {
+    func fetchStatus() -> AnyPublisher<RestStatus, RestClientError>
     func fetchSegments() -> AnyPublisher<Segments, RestClientError>
     func cleanSegments(_ segments: [Int], repeats: Int, order: Int) -> AnyPublisher<String, RestClientError>
     func stopCleaning() -> AnyPublisher<String, RestClientError>
     func pauseCleaning() -> AnyPublisher<String, RestClientError>
     func driveHome() -> AnyPublisher<String, RestClientError>
     func setFanspeed(_ fanspeed: Int) -> AnyPublisher<String, RestClientError>
+}
+
+/*public enum Endpoint {
+    case currentStatus
+    case fetchSegments
+    case cleanSegments
+    case stopCleaning
+    case pauseCleaning
+    case driveHome
+    case setFanSpeed
+
+    var path: String {
+        switch self {
+        case .currentStatus:
+            return "current_status"
+        case .fetchSegments:
+            return "segment_names"
+        case .cleanSegments:
+            return "start_cleaning_segment"
+        case .stopCleaning:
+            return "stop_cleaning"
+        case .pauseCleaning:
+            return "pause_cleaning"
+        case .driveHome:
+            return "drive_home"
+        case .setFanSpeed:
+            return "fanspeed"
+        }
+    }
+}*/
+
+enum RequestData {
+    case segments(SegmentsRequestData)
+    case fanspeed(FanspeedRequestData)
+}
+
+protocol EndpointType {
+    var path: String
+}
+
+struct Endpoint<Kind: EndpointType> {
+    var path: String
+    var data: RequestData
+}
+
+extension Endpoint where Kind == EndpointType.currentStatus {
+
 }
 
 public struct RestClient: RestClientProtocol {
@@ -68,89 +116,66 @@ public struct RestClient: RestClientProtocol {
         self.baseUrl = baseUrl
     }
 
-    enum Endpoints: String {
-        case fetchSegments = "segment_names"
-        case cleanSegments = "start_cleaning_segment"
-        case stopCleaning = "stop_cleaning"
-        case pauseCleaning = "pause_cleaning"
-        case driveHome = "drive_home"
-        case setFanSpeed = "fanspeed"
+    extension Endpoint where
+
+
+
+    // MARK: - Roborock requests
+
+    public func request(for endpoint: Endpoint) -> AnyPublisher<RestStatus, RestClientError> {
+        let request = makeRequest(with: endpoint.path, requestData: endpoint.requestData)
+        return sendRequest(request)
     }
 
-    enum RequestData {
-        case segments(SegmentsRequestData)
-        case fanspeed(FanspeedRequestData)
+    public func fetchStatus() -> AnyPublisher<RestStatus, RestClientError> {
+        // let request = makeGetRequest(with: Endpoints.currentStatus.rawValue)
+        let request = makeRequest(with: Endpoint.currentStatus.rawValue)
+        return sendRequest(request)
     }
 
     public func fetchSegments() -> AnyPublisher<Segments, RestClientError> {
-        guard let request = makeGetRequest(with: Endpoints.fetchSegments.rawValue) else {
-            return Result.Publisher(.failure(RestClientError.url))
-                .eraseToAnyPublisher()
-        }
-        return publisher(with: request, responseType: Segments.self)
+        let request = makeRequest(with: Endpoint.fetchSegments.rawValue)
+        return sendRequest(request)
     }
 
     public func cleanSegments(_ segments: [Int], repeats: Int, order: Int) -> AnyPublisher<String, RestClientError> {
         let requestData = SegmentsRequestData(segments: segments, repeats: repeats, order: order)
-
-        guard let request = makeDataPutRequest(with: Endpoints.cleanSegments.rawValue, requestData: RequestData.segments(requestData)) else {
-            return Result.Publisher(.failure(RestClientError.url))
-                .eraseToAnyPublisher()
-        }
-        return publisher(with: request, responseType: String.self)
+        let request = makeRequest(with: Endpoint.cleanSegments.rawValue, requestData: RequestData.segments(requestData))
+        return sendRequest(request)
     }
 
     public func stopCleaning() -> AnyPublisher<String, RestClientError> {
-        guard let request = makePutRequest(with: Endpoints.stopCleaning.rawValue) else {
-            return Result.Publisher(.failure(RestClientError.url))
-                .eraseToAnyPublisher()
-        }
-        return publisher(with: request, responseType: String.self)
+        let request = makeRequest(with: Endpoint.stopCleaning.rawValue)
+        return sendRequest(request)
     }
 
     public func pauseCleaning() -> AnyPublisher<String, RestClientError> {
-        guard let request = makePutRequest(with: Endpoints.pauseCleaning.rawValue) else {
-            return Result.Publisher(.failure(RestClientError.url))
-                .eraseToAnyPublisher()
-        }
-        return publisher(with: request, responseType: String.self)
+        let request = makeRequest(with: Endpoint.pauseCleaning.rawValue)
+        return sendRequest(request)
     }
 
     public func driveHome() -> AnyPublisher<String, RestClientError> {
-        guard let request = makePutRequest(with: Endpoints.driveHome.rawValue) else {
-            return Result.Publisher(.failure(RestClientError.url))
-                .eraseToAnyPublisher()
-        }
-        return publisher(with: request, responseType: String.self)
+        let request = makeRequest(with: Endpoint.driveHome.rawValue)
+        return sendRequest(request)
     }
 
     public func setFanspeed(_ fanspeed: Int) -> AnyPublisher<String, RestClientError> {
         let requestData = FanspeedRequestData(speed: fanspeed)
+        let request = makeRequest(with: Endpoint.setFanSpeed.rawValue, requestData: RequestData.fanspeed(requestData))
+        return sendRequest(request)
+    }
 
-        guard let request = makeDataPutRequest(with: Endpoints.setFanSpeed.rawValue, requestData: RestClient.RequestData.fanspeed(requestData)) else {
-            return Result.Publisher(.failure(RestClientError.url))
-                .eraseToAnyPublisher()
+    // MARK: - General requests
+
+    private func makeRequest(with url: String, requestData: RequestData? = nil) -> Result<URLRequest, RestClientError> {
+        guard let baseUrl = baseUrl, let url = URL(string: baseUrl + url) else {
+            return .failure(.invalidUrl)
         }
-        return publisher(with: request, responseType: String.self)
-    }
 
-    private func makeGetRequest(with url: String) -> URLRequest? {
-        guard let baseUrl = baseUrl, let url = URL(string: baseUrl + url) else { return nil }
         var request = URLRequest(url: url)
-        RequestTypes.Get.prepare(&request, with: ())
-        return request
-    }
-
-    private func makePutRequest(with url: String) -> URLRequest? {
-        guard let baseUrl = baseUrl, let url = URL(string: baseUrl + url) else { return nil }
-        var request = URLRequest(url: url)
-        RequestTypes.Put.prepare(&request)
-        return request
-    }
-
-    private func makeDataPutRequest(with url: String, requestData: RequestData) -> URLRequest? {
-        guard let baseUrl = baseUrl, let url = URL(string: baseUrl + url) else { return nil }
-        var request = URLRequest(url: url)
+        guard let requestData = requestData else {
+            return .success(request)
+        }
 
         do {
             switch requestData {
@@ -161,9 +186,19 @@ public struct RestClient: RestClientProtocol {
                 let data = try JSONEncoder().encode(segmentsRequestData)
                 RequestTypes.Put.prepare(&request, with: data)
             }
-            return request
+            return .success(request)
         } catch {
-            return nil
+            return .failure(.invalidRequestData)
+        }
+    }
+
+    public func sendRequest<T: Decodable>(_ request: Result<URLRequest, RestClientError>) -> AnyPublisher<T, RestClientError> {
+        switch request {
+        case .success(let request):
+            return publisher(with: request, responseType: T.self)
+        case .failure(let error):
+            return Result.Publisher(.failure(error))
+                .eraseToAnyPublisher()
         }
     }
 
@@ -171,7 +206,7 @@ public struct RestClient: RestClientProtocol {
         urlSession.dataTaskPublisher(for: request)
             .map{ data, _ in data }
             .decode(type: T.self, decoder: decoder)
-            .mapError{ _ in RestClientError.url }
+            .mapError{ _ in RestClientError.invalidUrl }
             .eraseToAnyPublisher()
     }
 }
