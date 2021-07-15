@@ -61,53 +61,6 @@ protocol RestClientProtocol {
     func setFanspeed(_ fanspeed: Int) -> AnyPublisher<String, RestClientError>
 }
 
-/*public enum Endpoint {
-    case currentStatus
-    case fetchSegments
-    case cleanSegments
-    case stopCleaning
-    case pauseCleaning
-    case driveHome
-    case setFanSpeed
-
-    var path: String {
-        switch self {
-        case .currentStatus:
-            return "current_status"
-        case .fetchSegments:
-            return "segment_names"
-        case .cleanSegments:
-            return "start_cleaning_segment"
-        case .stopCleaning:
-            return "stop_cleaning"
-        case .pauseCleaning:
-            return "pause_cleaning"
-        case .driveHome:
-            return "drive_home"
-        case .setFanSpeed:
-            return "fanspeed"
-        }
-    }
-}*/
-
-enum RequestData {
-    case segments(SegmentsRequestData)
-    case fanspeed(FanspeedRequestData)
-}
-
-protocol EndpointType {
-    var path: String
-}
-
-struct Endpoint<Kind: EndpointType> {
-    var path: String
-    var data: RequestData
-}
-
-extension Endpoint where Kind == EndpointType.currentStatus {
-
-}
-
 public struct RestClient: RestClientProtocol {
     var baseUrl: String?
     var urlSession = URLSession.shared
@@ -116,52 +69,76 @@ public struct RestClient: RestClientProtocol {
         self.baseUrl = baseUrl
     }
 
-    extension Endpoint where
+    enum Endpoint {
+        case currentStatus
+        case fetchSegments
+        case cleanSegments
+        case stopCleaning
+        case pauseCleaning
+        case driveHome
+        case setFanSpeed
 
+        var path: String {
+            switch self {
+            case .currentStatus:
+                return "current_status"
+            case .fetchSegments:
+                return "segment_names"
+            case .cleanSegments:
+                return "start_cleaning_segment"
+            case .stopCleaning:
+                return "stop_cleaning"
+            case .pauseCleaning:
+                return "pause_cleaning"
+            case .driveHome:
+                return "drive_home"
+            case .setFanSpeed:
+                return "fanspeed"
+            }
+        }
+    }
 
+    enum RequestData {
+        case segments(SegmentsRequestData)
+        case fanspeed(FanspeedRequestData)
+    }
 
     // MARK: - Roborock requests
 
-    public func request(for endpoint: Endpoint) -> AnyPublisher<RestStatus, RestClientError> {
-        let request = makeRequest(with: endpoint.path, requestData: endpoint.requestData)
-        return sendRequest(request)
-    }
-
     public func fetchStatus() -> AnyPublisher<RestStatus, RestClientError> {
-        // let request = makeGetRequest(with: Endpoints.currentStatus.rawValue)
-        let request = makeRequest(with: Endpoint.currentStatus.rawValue)
+        let request = makeRequest(with: Endpoint.currentStatus.path)
         return sendRequest(request)
     }
 
     public func fetchSegments() -> AnyPublisher<Segments, RestClientError> {
-        let request = makeRequest(with: Endpoint.fetchSegments.rawValue)
+        let request = makeRequest(with: Endpoint.fetchSegments.path)
         return sendRequest(request)
     }
 
     public func cleanSegments(_ segments: [Int], repeats: Int, order: Int) -> AnyPublisher<String, RestClientError> {
         let requestData = SegmentsRequestData(segments: segments, repeats: repeats, order: order)
-        let request = makeRequest(with: Endpoint.cleanSegments.rawValue, requestData: RequestData.segments(requestData))
+        let request = makeRequest(with: Endpoint.cleanSegments.path, requestData: RequestData.segments(requestData))
         return sendRequest(request)
     }
 
     public func stopCleaning() -> AnyPublisher<String, RestClientError> {
-        let request = makeRequest(with: Endpoint.stopCleaning.rawValue)
+        let request = makeRequest(with: Endpoint.stopCleaning.path)
         return sendRequest(request)
     }
 
     public func pauseCleaning() -> AnyPublisher<String, RestClientError> {
-        let request = makeRequest(with: Endpoint.pauseCleaning.rawValue)
+        let request = makeRequest(with: Endpoint.pauseCleaning.path)
         return sendRequest(request)
     }
 
     public func driveHome() -> AnyPublisher<String, RestClientError> {
-        let request = makeRequest(with: Endpoint.driveHome.rawValue)
+        let request = makeRequest(with: Endpoint.driveHome.path)
         return sendRequest(request)
     }
 
     public func setFanspeed(_ fanspeed: Int) -> AnyPublisher<String, RestClientError> {
         let requestData = FanspeedRequestData(speed: fanspeed)
-        let request = makeRequest(with: Endpoint.setFanSpeed.rawValue, requestData: RequestData.fanspeed(requestData))
+        let request = makeRequest(with: Endpoint.setFanSpeed.path, requestData: RequestData.fanspeed(requestData))
         return sendRequest(request)
     }
 
