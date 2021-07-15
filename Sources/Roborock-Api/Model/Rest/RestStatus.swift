@@ -49,4 +49,26 @@ public struct RestStatus: Equatable, Decodable {
         case humanError = "human_error"
         case model = "model"
     }
+
+    public init(messageVersion: Int, state: Int, battery: Int, cleanTime: Int, cleanArea: Int, errorCode: Int, mapPresent: Int, inCleaning: Int, inReturning: Int, inFreshState: Int, labStatus: Int, waterBoxStatus: Int, fanPower: Int, dndEnabled: Int, mapStatus: Int, lockStatus: Int, humanState: String, humanError: String, model: String) {
+        self.messageVersion = messageVersion
+        self.state = state
+        self.battery = battery
+        self.cleanTime = cleanTime
+        self.cleanArea = cleanArea
+        self.errorCode = errorCode
+        self.mapPresent = mapPresent
+        self.inCleaning = inCleaning
+        self.inReturning = inReturning
+        self.inFreshState = inFreshState
+        self.labStatus = labStatus
+        self.waterBoxStatus = waterBoxStatus
+        self.fanPower = fanPower
+        self.dndEnabled = dndEnabled
+        self.mapStatus = mapStatus
+        self.lockStatus = lockStatus
+        self.humanState = humanState
+        self.humanError = humanError
+        self.model = model
+    }
 }
