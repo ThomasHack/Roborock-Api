@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Roborock-Api",
+    name: "RoborockApi",
     platforms: [
         .macOS(.v10_15),
         .iOS(.v13),
@@ -13,15 +13,15 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Roborock-Api",
-            targets: ["Roborock-Api"]),
+            name: "RoborockApi",
+            targets: ["RoborockApi"]),
     ],
     dependencies: [
         .package(url: "https://github.com/pusher/NWWebSocket.git", .upToNextMajor(from: "0.5.2")),
     ],
     targets: [
         .target(
-            name: "Roborock-Api",
+            name: "RoborockApi",
             dependencies: ["NWWebSocket"])
     ]
 )
