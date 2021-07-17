@@ -145,7 +145,7 @@ public struct RestClient: RestClientProtocol {
     // MARK: - General requests
 
     private func makeRequest(with url: String, requestData: RequestData? = nil) -> Result<URLRequest, RestClientError> {
-        guard let baseUrl = baseUrl, let url = URL(string: baseUrl + url) else {
+        guard let baseUrl = baseUrl, let url = URL(string: "\(baseUrl)\(url)") else {
             return .failure(.invalidUrl)
         }
 
