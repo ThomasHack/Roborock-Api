@@ -49,6 +49,7 @@ public enum RestClientError: Error, Equatable {
     case invalidUrl
     case invalidHttpCode
     case invalidRequestData
+    case invalidResponseData
 }
 
 protocol RestClientProtocol {
@@ -151,6 +152,7 @@ public struct RestClient: RestClientProtocol {
 
         var request = URLRequest(url: url)
         guard let requestData = requestData else {
+            RequestTypes.Put.prepare(&request)
             return .success(request)
         }
 
@@ -183,7 +185,7 @@ public struct RestClient: RestClientProtocol {
         urlSession.dataTaskPublisher(for: request)
             .map{ data, _ in data }
             .decode(type: T.self, decoder: decoder)
-            .mapError{ _ in RestClientError.invalidUrl }
+            .mapError{ _ in RestClientError.invalidResponseData }
             .eraseToAnyPublisher()
     }
 }
