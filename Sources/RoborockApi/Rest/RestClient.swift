@@ -73,7 +73,10 @@ extension URLSession {
         }
         
         return dataTaskPublisher(for: request)
-            .map{ data, _ in data }
+            .map{ data, response in
+                print(response)
+                return data
+            }
             .decode(type: Response.self, decoder: JSONDecoder())
             .mapError{ error in RestClientError.invalidResponseData }
             .eraseToAnyPublisher()

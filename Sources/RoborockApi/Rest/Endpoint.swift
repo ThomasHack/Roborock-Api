@@ -2,6 +2,8 @@
 //  Endpoint.swift
 //  
 //
+//  Created by Hack, Thomas on 19.07.21.
+//
 
 import Foundation
 
@@ -21,7 +23,7 @@ extension Endpoint {
         components.path = "/api/" + path
         components.queryItems = queryItems
 
-        guard let url = URL(string: baseUrl) else { return nil }
+        guard let url = components.url else { return nil }
 
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
