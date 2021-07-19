@@ -1,8 +1,6 @@
 //
 //  ApiWebSocketDelegate.swift
-// 
 //
-//  Created by Thomas Hack on 13.05.21.
 //
 
 import Foundation

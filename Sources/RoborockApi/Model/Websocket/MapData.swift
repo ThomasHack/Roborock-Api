@@ -1,8 +1,6 @@
 //
 //  MapData.swift
-// 
 //
-//  Created by Thomas Hack on 29.06.21.
 //
 
 import UIKit

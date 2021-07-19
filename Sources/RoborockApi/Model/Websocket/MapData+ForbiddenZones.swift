@@ -1,8 +1,6 @@
 //
 //  MapData+ForbiddenZones.swift
-// 
 //
-//  Created by Thomas Hack on 02.07.21.
 //
 
 import Foundation

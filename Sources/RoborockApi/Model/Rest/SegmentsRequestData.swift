@@ -1,8 +1,6 @@
 //
 //  SegmentsRequestData.swift
-//  
 //
-//  Created by Thomas Hack on 13.07.21.
 //
 
 import Foundation

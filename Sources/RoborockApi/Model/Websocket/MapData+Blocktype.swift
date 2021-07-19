@@ -1,8 +1,6 @@
 //
 //  MapData+Blocktype.swift
-// 
 //
-//  Created by Thomas Hack on 01.07.21.
 //
 
 import Foundation

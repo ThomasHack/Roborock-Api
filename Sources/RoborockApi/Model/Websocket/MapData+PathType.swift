@@ -2,8 +2,6 @@
 //  MapData+PathType.swift
 //
 //
-//  Created by Thomas Hack on 12.07.21.
-//
 
 import Foundation
 

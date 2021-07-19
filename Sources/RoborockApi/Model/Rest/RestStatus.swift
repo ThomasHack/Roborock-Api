@@ -1,8 +1,6 @@
 //
-//  File.swift
-//  
+//  RestStatus.swift
 //
-//  Created by Hack, Thomas on 14.07.21.
 //
 
 import Foundation
