@@ -1,9 +1,7 @@
 //
 //  Endpoint.swift
-//  
 //
-//  Created by Hack, Thomas on 19.07.21.
-//
+//  https://www.swiftbysundell.com/articles/creating-generic-networking-apis-in-swift/
 
 import Foundation
 
