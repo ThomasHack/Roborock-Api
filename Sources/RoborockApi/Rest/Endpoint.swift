@@ -22,9 +22,12 @@ extension Endpoint {
         components.queryItems = queryItems
 
         guard let url = components.url else { return nil }
-
+        
         var request = URLRequest(url: url)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.httpMethod = httpMethod.rawValue
+        request.httpBody = body
         return request
     }
 }
