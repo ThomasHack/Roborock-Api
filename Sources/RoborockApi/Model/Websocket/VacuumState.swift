@@ -15,7 +15,7 @@ public enum VacuumState: Int {
     case returningDock = 6
     case manualMode = 7
     case charging = 8
-    case charginError = 9
+    case chargingError = 9
     case paused = 10
     case spotCleaning = 11
     case inError = 12
