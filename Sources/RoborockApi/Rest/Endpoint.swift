@@ -16,8 +16,8 @@ public struct Endpoint<Response: Decodable>: Equatable {
 }
 
 extension Endpoint {
-    func makeRequest(with baseUrl: String) -> URLRequest? {
-        guard var components = URLComponents(string: baseUrl) else { return nil }
+    func makeRequest(with baseUrl: URL) -> URLRequest? {
+        guard var components = URLComponents(url: baseUrl, resolvingAgainstBaseURL: false) else { return nil }
         components.path = "/api/" + path
         components.queryItems = queryItems
 
