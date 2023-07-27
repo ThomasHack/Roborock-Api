@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "NWWebSocket",
+        "repositoryURL": "https://github.com/ThomasHack/NWWebSocket.git",
+        "state": {
+          "branch": "main",
+          "revision": "1c5ee78cf68489fb839edb6b180820dbacd42f2e",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -18,7 +18,9 @@ public struct RestClient {
 }
 
 extension RestClient {
-    private static let urlSession = URLSession.shared
+    private static let urlSession = URLSession(configuration: .default,
+                                               delegate: RestClientURLSessionDelegate(),
+                                               delegateQueue: nil)
     private static var baseUrl = URL(string: "http://example.org")!
 
     public static let live = RestClient(

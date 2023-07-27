@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -7,9 +7,9 @@ let package = Package(
     name: "RoborockApi",
     platforms: [
         .macOS(.v10_15),
-        .iOS(.v13),
-        .tvOS(.v13),
-        .watchOS(.v6)
+        .iOS(.v15),
+        .tvOS(.v15),
+        .watchOS(.v8)
     ],
     products: [
         .library(
@@ -17,7 +17,7 @@ let package = Package(
             targets: ["RoborockApi"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pusher/NWWebSocket.git", .upToNextMajor(from: "0.5.2")),
+        .package(url: "https://github.com/ThomasHack/NWWebSocket.git", .branchItem("main")),
     ],
     targets: [
         .target(
