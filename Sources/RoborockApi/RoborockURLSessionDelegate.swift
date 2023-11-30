@@ -1,19 +1,40 @@
 //
-//  RestClientURLSessionDelegate.swift
+//  RoborockURLSessionDelegate.swift
 //  
 //
 //  Created by Hack, Thomas on 27.07.23.
 //
 
+import ComposableArchitecture
 import Foundation
 
-public class RestClientURLSessionDelegate: NSObject, URLSessionDelegate {
+public class RoborockURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionWebSocketDelegate {
+    var continuation: AsyncStream<WebSocketClient.Action>.Continuation?
+
+    public func urlSession(
+        _: URLSession,
+        webSocketTask _: URLSessionWebSocketTask,
+        didOpenWithProtocol protocol: String?
+    ) {
+        self.continuation?.yield(.didOpen(protocol: `protocol`))
+    }
+
+    public func urlSession(
+        _: URLSession,
+        webSocketTask _: URLSessionWebSocketTask,
+        didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
+        reason: Data?
+    ) {
+        self.continuation?.yield(.didClose(code: closeCode, reason: reason))
+        self.continuation?.finish()
+    }
+
     public func urlSession(_ session: URLSession,
                            didReceive challenge: URLAuthenticationChallenge,
                            completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 
         let host = challenge.protectionSpace.host
-        let trustedHosts = ["roborock.friday.home"]
+        let trustedHosts = ["roborock.friday.home", "roborock"]
         if trustedHosts.contains(host) {
             // Check SSL certificate
             guard let trust = challenge.protectionSpace.serverTrust,
