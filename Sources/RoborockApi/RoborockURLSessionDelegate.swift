@@ -9,26 +9,6 @@ import ComposableArchitecture
 import Foundation
 
 public class RoborockURLSessionDelegate: NSObject, URLSessionDelegate, URLSessionWebSocketDelegate {
-    var continuation: AsyncStream<WebSocketClient.Action>.Continuation?
-
-    public func urlSession(
-        _: URLSession,
-        webSocketTask _: URLSessionWebSocketTask,
-        didOpenWithProtocol protocol: String?
-    ) {
-        self.continuation?.yield(.didOpen(protocol: `protocol`))
-    }
-
-    public func urlSession(
-        _: URLSession,
-        webSocketTask _: URLSessionWebSocketTask,
-        didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
-        reason: Data?
-    ) {
-        self.continuation?.yield(.didClose(code: closeCode, reason: reason))
-        self.continuation?.finish()
-    }
-
     public func urlSession(_ session: URLSession,
                            didReceive challenge: URLAuthenticationChallenge,
                            completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

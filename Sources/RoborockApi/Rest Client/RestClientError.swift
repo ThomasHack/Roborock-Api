@@ -7,7 +7,7 @@ import Foundation
 
 public enum RestClientError: Error, Equatable {
     case invalidUrl
-    case invalidHttpCode
+    case invalidHttpCode(Int)
     case invalidRequestData
     case invalidResponseData
     case invalidEndpoint
