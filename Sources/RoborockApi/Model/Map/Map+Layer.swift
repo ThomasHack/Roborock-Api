@@ -74,6 +74,12 @@ extension Map {
             public var avg: CGPoint {
                 CGPoint(x: x.avg, y: y.avg)
             }
+
+            public init(x: Dimension, y: Dimension, pixelCount: Int) {
+                self.x = x
+                self.y = y
+                self.pixelCount = pixelCount
+            }
         }
 
         public struct Dimension: Equatable, Decodable {
@@ -81,6 +87,13 @@ extension Map {
             public var max: Int
             public var mid: Int
             public var avg: Int
+
+            public init(min: Int, max: Int, mid: Int, avg: Int) {
+                self.min = min
+                self.max = max
+                self.mid = mid
+                self.avg = avg
+            }
         }
 
         public struct Pixel: Equatable, Decodable {

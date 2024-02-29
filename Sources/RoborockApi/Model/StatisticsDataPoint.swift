@@ -11,6 +11,11 @@ public struct StatisticsDataPoint: Equatable, Decodable {
     public var type: DataPointType
     public var value: Int
 
+    public init(type: DataPointType, value: Int) {
+        self.type = type
+        self.value = value
+    }
+
     public enum DataPointType: String, Decodable {
         case time
         case area

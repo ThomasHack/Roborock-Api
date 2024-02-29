@@ -35,6 +35,10 @@ extension Map {
 
         public struct MetaData: Equatable, Decodable {
             public var angle: Int?
+
+            public init(angle: Int? = nil) {
+                self.angle = angle
+            }
         }
 
         public enum EntityType: String, Equatable, Codable {

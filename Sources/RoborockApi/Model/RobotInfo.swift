@@ -13,6 +13,13 @@ public struct RobotInfo: Equatable, Decodable {
     public var modelDetails: ModelDetails
     public var implementation: String
 
+    public init(manufacturer: String, modelName: String, modelDetails: ModelDetails, implementation: String) {
+        self.manufacturer = manufacturer
+        self.modelName = modelName
+        self.modelDetails = modelDetails
+        self.implementation = implementation
+    }
+
     public struct ModelDetails: Equatable, Decodable {
         public var supportedAttachments: [SupportedAttachments]
 

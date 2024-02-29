@@ -58,6 +58,11 @@ public struct StateAttribute: Decodable, Equatable {
         public var type: AttachmentType
         public var attached: Bool
 
+        public init(type: AttachmentType, attached: Bool) {
+            self.type = type
+            self.attached = attached
+        }
+
         public enum AttachmentType: String, Decodable {
             case dustbin, watertank, mop
         }
@@ -92,6 +97,11 @@ public struct StateAttribute: Decodable, Equatable {
         public var type: PresetType
         public var value: PresetValue
 
+        public init(type: PresetType, value: PresetValue) {
+            self.type = type
+            self.value = value
+        }
+
         public enum PresetType: String, Decodable {
             case fanSpeed = "fan_speed"
             case waterGrade = "water_grade"
@@ -107,6 +117,11 @@ public struct StateAttribute: Decodable, Equatable {
         public var level: Int
         public var flag: StatusFlag
 
+        public init(level: Int, flag: StatusFlag) {
+            self.level = level
+            self.flag = flag
+        }
+
         public enum StatusFlag: String, Decodable {
             case none, charging, discharging, charged
         }
@@ -116,6 +131,12 @@ public struct StateAttribute: Decodable, Equatable {
         public var type: String
         public var subType: String
         public var remaining: Remaining
+
+        public init(type: String, subType: String, remaining: Remaining) {
+            self.type = type
+            self.subType = subType
+            self.remaining = remaining
+        }
 
         public struct Remaining: Decodable, Equatable {
             public var value: Int

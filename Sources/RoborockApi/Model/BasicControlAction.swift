@@ -10,6 +10,10 @@ import Foundation
 public struct BasicControlAction: Equatable, Codable {
     var action: Action
 
+    public init(action: Action) {
+        self.action = action
+    }
+
     public enum Action: String, Codable {
         case start
         case stop
