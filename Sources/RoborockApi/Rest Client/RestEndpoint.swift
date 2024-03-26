@@ -7,7 +7,7 @@ import Foundation
 
 public typealias HttpHeaders = [String: String]
 
-public struct Endpoint<Response: Decodable>: Equatable {
+public struct RestEndpoint<Response: Decodable>: Equatable {
     var path: String
     var httpMethod: HttpMethod
     var headers: HttpHeaders?
@@ -15,7 +15,7 @@ public struct Endpoint<Response: Decodable>: Equatable {
     var queryItems: [URLQueryItem]?
 }
 
-extension Endpoint {
+extension RestEndpoint {
     func makeRequest(with baseUrl: URL) -> URLRequest? {
         guard var components = URLComponents(url: baseUrl, resolvingAgainstBaseURL: false) else { return nil }
         components.path = "/api/v2/" + path
@@ -40,72 +40,78 @@ extension Endpoint {
     }
 }
 
-extension Endpoint where Response == RobotState {
+extension RestEndpoint where Response == RobotInfo {
+    static var info: Self {
+        RestEndpoint(path: "robot", httpMethod: .get)
+    }
+}
+
+extension RestEndpoint where Response == RobotState {
     static var stateStream: Self {
-        Endpoint(path: "robot/state/sse", httpMethod: .get)
+        RestEndpoint(path: "robot/state/sse", httpMethod: .get)
     }
     static var state: Self {
-        Endpoint(path: "robot/state", httpMethod: .get)
+        RestEndpoint(path: "robot/state", httpMethod: .get)
     }
 }
 
-extension Endpoint where Response == [StateAttribute] {
+extension RestEndpoint where Response == [StateAttribute] {
     static var stateAttributesStream: Self {
-        Endpoint(path: "robot/state/attributes/sse", httpMethod: .get)
+        RestEndpoint(path: "robot/state/attributes/sse", httpMethod: .get)
     }
     static var stateAttributes: Self {
-        Endpoint(path: "robot/state/attributes", httpMethod: .get)
+        RestEndpoint(path: "robot/state/attributes", httpMethod: .get)
     }
 }
 
-extension Endpoint where Response == Map {
+extension RestEndpoint where Response == Map {
     static var mapStream: Self {
-        Endpoint(path: "robot/state/map/sse", httpMethod: .get)
+        RestEndpoint(path: "robot/state/map/sse", httpMethod: .get)
     }
     static var map: Self {
-        Endpoint(path: "robot/state/map", httpMethod: .get)
+        RestEndpoint(path: "robot/state/map", httpMethod: .get)
     }
 }
 
-extension Endpoint where Response == [StatisticsDataPoint] {
+extension RestEndpoint where Response == [StatisticsDataPoint] {
     static var currentStatistics: Self {
-        Endpoint(path: "robot/capabilities/CurrentStatisticsCapability", httpMethod: .get)
+        RestEndpoint(path: "robot/capabilities/CurrentStatisticsCapability", httpMethod: .get)
     }
     static var totalStatistics: Self {
-        Endpoint(path: "robot/capabilities/TotalStatisticsCapability", httpMethod: .get)
+        RestEndpoint(path: "robot/capabilities/TotalStatisticsCapability", httpMethod: .get)
     }
 }
 
-extension Endpoint where Response == [FanSpeedControlPreset] {
+extension RestEndpoint where Response == [FanSpeedControlPreset] {
     static var fanSpeedControl: Self {
-        Endpoint(path: "robot/capabilities/FanSpeedControlCapability/preset", httpMethod: .get)
+        RestEndpoint(path: "robot/capabilities/FanSpeedControlCapability/preset", httpMethod: .get)
     }
 }
 
-extension Endpoint where Response == [WaterUsageControlPreset] {
+extension RestEndpoint where Response == [WaterUsageControlPreset] {
     static var waterUsageControl: Self {
-        Endpoint(path: "robot/capabilities/WaterUsageControlCapability/preset", httpMethod: .get)
+        RestEndpoint(path: "robot/capabilities/WaterUsageControlCapability/preset", httpMethod: .get)
     }
 }
 
-extension Endpoint where Response == [Segment] {
+extension RestEndpoint where Response == [Segment] {
     static var mapSegments: Self {
-        Endpoint(path: "robot/capabilities/MapSegmentationCapability", httpMethod: .get)
+        RestEndpoint(path: "robot/capabilities/MapSegmentationCapability", httpMethod: .get)
     }
 }
 
-extension Endpoint {
+extension RestEndpoint {
     static func basicControl(_ body: Data) -> Self {
-        Endpoint(path: "robot/capabilities/BasicControlCapability", httpMethod: .put, body: body)
+        RestEndpoint(path: "robot/capabilities/BasicControlCapability", httpMethod: .put, body: body)
     }
     static func fanSpeedControl(_ body: Data) -> Self {
-        Endpoint(path: "robot/capabilities/FanSpeedControlCapability/preset", httpMethod: .put, body: body)
+        RestEndpoint(path: "robot/capabilities/FanSpeedControlCapability/preset", httpMethod: .put, body: body)
     }
 
     static func waterUsageControl(_ body: Data) -> Self {
-        Endpoint(path: "robot/capabilities/WaterUsageControlCapability/presets", httpMethod: .put, body: body)
+        RestEndpoint(path: "robot/capabilities/WaterUsageControlCapability/presets", httpMethod: .put, body: body)
     }
     static func cleanSegments(_ body: Data) -> Self {
-        Endpoint(path: "robot/capabilities/MapSegmentationCapability", httpMethod: .put, body: body)
+        RestEndpoint(path: "robot/capabilities/MapSegmentationCapability", httpMethod: .put, body: body)
     }
 }

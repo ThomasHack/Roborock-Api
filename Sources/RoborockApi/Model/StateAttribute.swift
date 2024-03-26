@@ -38,6 +38,11 @@ public struct StateAttribute: Decodable, Equatable {
         }
     }
 
+    public init(type: AttributeType, data: Attribute) {
+        self.type = type
+        self.data = data
+    }
+
     public enum AttributeType: String, Decodable, Equatable {
         case attachment = "AttachmentStateAttribute"
         case status = "StatusStateAttribute"
@@ -54,11 +59,25 @@ public struct StateAttribute: Decodable, Equatable {
         case consumable(ConsumableStateAttribute)
     }
 
-    public struct AttachmentStateAttribute: Decodable, Equatable {
+    public struct AttachmentStateAttribute: Decodable, Equatable, Identifiable, Hashable {
+        public let id: UUID
         public var type: AttachmentType
         public var attached: Bool
 
+        enum CodingKeys: CodingKey {
+            case type
+            case attached
+        }
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.id = UUID()
+            self.type = try container.decode(AttachmentType.self, forKey: .type)
+            self.attached = try container.decode(Bool.self, forKey: .attached)
+        }
+
         public init(type: AttachmentType, attached: Bool) {
+            self.id = UUID()
             self.type = type
             self.attached = attached
         }
@@ -91,6 +110,10 @@ public struct StateAttribute: Decodable, Equatable {
         public enum StatusFlag: String, Decodable {
             case none, zone, segment, spot, target, resumable, mapping
         }
+    }
+
+    public enum OperationModePreset: Decodable {
+        case vacuum, mop, vacuum_and_mop
     }
 
     public struct PresetSelectionStateAttribute: Decodable, Equatable {

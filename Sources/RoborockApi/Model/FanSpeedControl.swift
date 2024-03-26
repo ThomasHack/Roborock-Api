@@ -8,11 +8,11 @@
 import Foundation
 
 public enum FanSpeedControlPreset: String, Codable, CaseIterable {
+    case off
     case low
     case medium
     case high
     case max
-    case off
 }
 
 public struct FanSpeedControl: Equatable, Codable {

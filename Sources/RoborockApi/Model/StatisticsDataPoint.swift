@@ -19,5 +19,6 @@ public struct StatisticsDataPoint: Equatable, Decodable {
     public enum DataPointType: String, Decodable {
         case time
         case area
+        case count
     }
 }

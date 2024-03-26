@@ -23,6 +23,10 @@ public struct RobotInfo: Equatable, Decodable {
     public struct ModelDetails: Equatable, Decodable {
         public var supportedAttachments: [SupportedAttachments]
 
+        public init(supportedAttachments: [SupportedAttachments]) {
+            self.supportedAttachments = supportedAttachments
+        }
+
         public enum SupportedAttachments: String, Decodable {
             case watertank
             case mop

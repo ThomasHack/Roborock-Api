@@ -6,6 +6,7 @@
 import Foundation
 
 public enum RestClientError: Error, Equatable {
+    case missingBaseUrl
     case invalidUrl
     case invalidHttpCode(Int)
     case invalidRequestData
@@ -14,6 +15,8 @@ public enum RestClientError: Error, Equatable {
 
     var localizedDescription: String {
         switch self {
+        case .missingBaseUrl:
+            return "Missing base URL"
         case .invalidUrl:
             return "Invalid Url."
         case .invalidHttpCode:
