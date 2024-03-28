@@ -109,7 +109,7 @@ extension RestEndpoint {
     }
 
     static func waterUsageControl(_ body: Data) -> Self {
-        RestEndpoint(path: "robot/capabilities/WaterUsageControlCapability/presets", httpMethod: .put, body: body)
+        RestEndpoint(path: "robot/capabilities/WaterUsageControlCapability/preset", httpMethod: .put, body: body)
     }
     static func cleanSegments(_ body: Data) -> Self {
         RestEndpoint(path: "robot/capabilities/MapSegmentationCapability", httpMethod: .put, body: body)
